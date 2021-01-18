@@ -57,4 +57,3 @@ if (!options.file) {
 	const path = (options.type == "template") ? templatesPath : includesPath;
 	st.upload(sAPI, options.type, options.account, name, path + options.file);
 }
-
