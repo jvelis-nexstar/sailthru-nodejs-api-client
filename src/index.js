@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
 const sailthru = require('sailthru-client');
-const chalk = require('chalk');
-const credentials = require('../config/credentials.json');
+const st = require('./sailthru.js');
 
-const templatesPath = "";
-const includesPath = "";
+const credentials = require('../config/credentials.json');
+const config = require('../config/config.json');
+
+const templatesPath = config['templatesPath'];
+const includesPath = config['includesPath'];
 
 const options = yargs
 	.usage('Usage: $0 [command] [options]')
-	.example('$0 -t template -a "1234" -file "file.html"', 'Creates or updates the template using file.html in account 1234')
+	.example('$0 -t template -a <account> -f <file.html> -n <name of template>', 'Creates or updates the template using file.html in account 1234')
 	.options({
 		'type': {
 			description: 'template or include',
@@ -18,7 +20,7 @@ const options = yargs
 			alias: 't',
 		},
 		'account': {
-			description: 'Account to use from the credentials file',
+			description: 'Account name to use from the credentials file',
 			type: "string",
 			required: true,
 			alias: 'a',
@@ -27,51 +29,32 @@ const options = yargs
 			description: 'File to upload. If missing, will print a list of the exisiting templates',
 			type: "string",
 			alias: 'f'
+		},
+		'name': {
+			description: 'Template name if creating or updating a template. If missing, the first comment in the file will be used as a name',
+			type: "string",
+			alias: 'n'
 		}
 	})
 	.argv;
 
-console.log('\n\nInspecting options');
-console.dir(options);
+let apiKey, apiSecret;
 
-// Get API keys
 try {
-	var apiKey = credentials[options.account]['key'];
-	var apiSecret = credentials[options.account]['secret'];
+	apiKey = credentials[options.account]['key'];
+	apiSecret = credentials[options.account]['secret'];
 } catch {
-	console.log("Invalid account");
+	console.error("Invalid account identifier");
 	process.exit(1);
 }
 
-var st = sailthru.createSailthruClient(apiKey, apiSecret);
+let sAPI = sailthru.createSailthruClient(apiKey, apiSecret);
 
-switch(options.type) {
-	case "include":
-		console.log('List includes');
-		st.apiGet('include', {}, function(e, r) {
-			if (e) {
-				console.log(e);
-				return;
-			}
-			console.log(r);
-		});
-		break;
-
-	case "template":
-		st.getTemplates(function(e,r) {
-			if (e) {
-				console.log(e);
-				return;
-			}
-			console.log(chalk.blue('List of existing templates in account ' + options.account));
-			r["templates"].forEach(function(t) { 
-				console.log(t.name) }
-			);
-		});
-		break;
-
-	default:
-		console.log("Missing a valid option");
+if (!options.file) {
+	st.printList(sAPI, options.type, options.account);
+} else {
+	const name = (!options.name) ? "" : options.name;
+	const path = (options.type == "template") ? templatesPath : includesPath;
+	st.upload(sAPI, options.type, options.account, name, path + options.file);
 }
-
 

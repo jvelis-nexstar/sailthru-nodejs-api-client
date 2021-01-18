@@ -12,6 +12,7 @@
   "dependencies": {
     "boxen": "^5.0.0",
     "chalk": "^4.1.0",
+    "fs": "0.0.1-security",
     "sailthru-client": "^3.0.5",
     "yargs": "^16.2.0"
   }
