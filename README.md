@@ -1,5 +1,5 @@
 # sailthru-nodejs-api-client
-Basic Sailthru node.js API client
+##ExamplesBasic Sailthru node.js API client
 
 * Add `config/credentials.json` and `config/config.json`
 * Run `npm install`
