@@ -110,11 +110,12 @@ exports.upload = (st, type, account, name, sourceFile) => {
  *
  * @param st		object Sailthru API instance
  * @param account	string account
+ * @param image		string path to image file
  * @returns			-
  */
-exports.beacon = (st, account) => {
+exports.beacon = (st, account, image) => {
 	console.log(chalk.yellow('Set beacon image for '+ account + ':'));
-	const file = fs.createReadStream('img/beacon.png');
+	const file = fs.createReadStream(image);
 	const settingsOptions = {
 		"file": file
 	}

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
 const sailthru = require('sailthru-client');
-const st = require('./sailthru.js');
+const lib = require('./lib.js');
 
 const credentials = require('../config/credentials.json');
 const config = require('../config/config.json');
@@ -25,7 +25,7 @@ const options = yargs
 			required: true,
 			alias: 'a',
 		},
-		'file': {
+		'filename': {
 			description: 'File to upload. If missing, will print a list of the exisiting templates',
 			type: "string",
 			alias: 'f'
@@ -38,8 +38,9 @@ const options = yargs
 	})
 	.argv;
 
-let apiKey, apiSecret;
+const type = (!options.type) ? "template" : "include";
 
+let apiKey, apiSecret;
 try {
 	apiKey = credentials[options.account]['key'];
 	apiSecret = credentials[options.account]['secret'];
@@ -48,12 +49,12 @@ try {
 	process.exit(1);
 }
 
-let sAPI = sailthru.createSailthruClient(apiKey, apiSecret);
+let apiClient = sailthru.createSailthruClient(apiKey, apiSecret);
 
-if (!options.file) {
-	st.printList(sAPI, options.type, options.account);
+if (!options.filename) {
+	lib.printList(apiClient, type, options.account);
 } else {
 	const name = (!options.name) ? "" : options.name;
-	const path = (options.type == "template") ? templatesPath : includesPath;
-	st.upload(sAPI, options.type, options.account, name, path + options.file);
+	const path = (type == "template") ? templatesPath : includesPath;
+	lib.upload(apiClient, type, options.account, name, path + options.filename);
 }
