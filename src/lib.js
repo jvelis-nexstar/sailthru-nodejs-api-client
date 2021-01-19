@@ -62,7 +62,7 @@ exports.upload = (st, type, account, name, sourceFile) => {
 	}
 
 	if (name.length == 0) {
-		console.error("The " + type + " name is missing");
+		console.error(chalk.red("The " + type + " name is missing"));
 	} else {
 		// Upload to Sailthru
 		console.log(chalk.yellow("Uploading " + type + ": \n" + name + "\nfrom: " + sourceFile));
@@ -70,7 +70,7 @@ exports.upload = (st, type, account, name, sourceFile) => {
 		switch(type) {
 			case "template":
 				let templateOptions = {
-				    content_html: "",
+				    content_html: "{* Flexible Content Module include for existing feeds *}\n{include 'CoreModule'}",
 				    from_name: account,
 				    public_name: name,
 				    is_link_tracking: 1,
@@ -103,6 +103,48 @@ exports.upload = (st, type, account, name, sourceFile) => {
 				break;
 		}
 	}
+}
+
+/**
+ * Generate a template file with account data using the placeholder file
+ *
+ * @param data		array 	account data
+ * @param path		string 	dest path to save new template
+ * @returns -
+ */
+exports.generateTemplate = (data, path) => {
+	console.log(chalk.yellow('Generating a new local template for '+ data["account_name"] ));
+	const placeholder = "src/template_placeholder.html"
+	const fullPath = path + data["account_name"].toLowerCase() + "-daily-news.html";
+	let newFileContents = [],
+		fileLines = [],
+		fileContents = "";
+
+	if (fs.existsSync(fullPath)) {
+    	console.error(chalk.red("File already exists: \n" + fullPath));
+    	process.exit(1);
+	}
+
+	try {
+		fileContents = fs.readFileSync(placeholder, 'UTF-8');
+	} catch (e) {
+		console.error(e);
+		process.exit(1);
+	}
+
+	fileLines = fileContents.split(/\r?\n/); // split the contents by new line
+	fileLines.forEach(l => {
+		let newline = l;
+		for(var key in data) {
+			newline = newline.replace("{{"+key+"}}", data[key]);
+		}
+		newFileContents.push(newline);
+	});
+
+	fs.writeFile(fullPath, newFileContents.join("\n"), function (e) {
+		if (e) return console.log(chalk.red(e));
+		console.log(chalk.green("Template file saved: \n" + fullPath));
+	});
 }
 
 /**

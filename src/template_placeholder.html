@@ -1,0 +1,178 @@
+{*{{account_name}} - Daily News*}
+
+{*----- TEMPLATE SPECIFIC VARIABLES -----*}
+
+{*---- GLOBAL CONTROLS ----*}
+{subject_line = "{{account_name}} Daily Digest"}
+{newsletter_name = "Your {{account_name}} Daily Digest"} {*this is the title of your newsletter*}
+
+{*----- MASTHEAD -----*}
+{newsletter_title = "{{account_name}} Daily Digest"}
+
+{*---- SECTIONS ----*}
+{sections = [0,1,2,3,4,5,6]}
+{sections[0] = {}}
+{sections[1] = {}}
+{sections[2] = {}}
+{sections[3] = {}}
+{sections[4] = {}}
+{sections[5] = {}}
+{sections[6] = {}}
+
+{*"big_story", "article_images", "article_headlines", "station_promo"*}
+
+{sections[0].module_type = "big_story"}
+{sections[0].num_articles = 4}
+{sections[0].feed = DailyNews}
+
+{sections[1].module_type = "article_images"}
+{sections[1].title = "Top Stories"}
+{sections[1].num_articles = 4}
+{sections[1].start_index = 4}
+{sections[1].dark_bg = "on"}
+{sections[1].feed = DailyNews}
+
+{sections[2].module_type = "article_images"}
+{sections[2].title = "In case you missed it..."}
+{sections[2].num_articles = 4}
+{sections[2].start_index = 8}
+{sections[2].feed = DailyNews}
+
+{*----- STATION SPECIFIC VARIABLES -----*}
+
+{*------MASTHEAD LOGO IMAGES-------*}
+{logo_image_small = "{{logo_image_small}}"}
+{logo_image_wide = "{{logo_image_wide}}"}
+{logo_url = "{{logo_url}}"}
+{logo_alt_text = "{{account_name}}"}
+{masthead_shading = "{{masthead_shading}}"} {*#hex_code or "off"*}
+
+{*----- SET SOCIAL FOOTER LINKS -----*}
+{footersocial_link_fb = "{{footersocial_link_fb}}"}
+{footersocial_link_tw = "{{footersocial_link_tw}}"}
+{footersocial_link_inst = "{{footersocial_link_inst}}"}
+{footersocial_link_yt = "{{footersocial_link_yt}}"}
+
+{*-----FOOTER TEXT AND LINKS-----*}
+{separator = "&nbsp;|&nbsp;"}
+{display_1st_link = "on"}
+{footer_link1_text = "Feedback"}
+{footer_link1_url = "{{footer_link1_url}}"}
+{display_2nd_link = "on"}
+{footer_link2_text = "Unsubscribe"} {*default is Sailthru standard optout/preferences page*}
+{footer_link2_url = optout_confirm_url}
+{display_3rd_link = "on"}
+{footer_link3_text = "About Us"}
+{footer_link3_url = "{{footer_link3_url}}"}
+
+{*-----SET FOOTER CONTENT-----*}
+{*company name + address*}
+{company_name = "&copy; 1998-2020 {{account_name}}&nbsp;&nbsp;|&nbsp;&nbsp;Nexstar Broadcasting, Inc.&nbsp;&nbsp;|&nbsp;&nbsp;"}
+{company_address = "{{address}}"}
+
+{*----- GLOBAL STYLES AND VARIABLES -----*}
+
+{*---- GLOBAL CONTROLS ----*}
+{description_char_limit = 300} {*default limit of the # of characters in description text; enter 20 or larger number*}
+{max_width = 640} {*number only*}
+{side_margins = 36} {*number only*}
+
+{*----- MASTHEAD -----*}
+{newsletter_title_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{newsletter_title_color = "#000001"} {*#hex_code*}
+{newsletter_title_size = "40"} {*number only*}
+{newsletter_date = date('MMMM d, yyyy')}
+{newsletter_date_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{newsletter_date_color = "#fffffe"} {*#hex_code*}
+{newsletter_date_size = "15"} {*number only*}
+{masthead_padding = "15"} {*number only*}
+
+{*----- SECTION HEADERS -----*}
+{section_type = "text"} {*"image", "text", or "image_and_text"*}
+{section_title_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{section_title_color = "#000001"} {*#hex_code*}
+{section_title_size = "22"} {*number only*}
+{section_line_color = "#000001"} {*#hex_code*}
+{section_line_height = "1"}
+
+{*----- BIG STORY STYLES -----*}
+{hero_title_size = "30"} {*number only*}
+{hero_title_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{hero_title_color = "#000001"} {*#hex_code*}
+{hero_description_size = "15"} {*number only*}
+{hero_description_font = "Arial,Helvetica,sans-serif"}
+{hero_description_color = "#000001"} {*#hex_code*}
+
+{*----- ARTICLE IMAGES MODULE -----*}
+{article_sml_img_height = "176"} {*When width is 230px. IMPORTANT*}
+{article_sml_shading = "#FFF"} {*#hex_code*}
+{article_sml_headline_spc_above = "1"} {*number only*}
+{article_sml_headline_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{article_sml_headline_size = "20"} {*number only*}
+{article_sml_headline_color = "#000001"} {*#hex_code*}
+{article_sml_byline_switch = "off"} {*"on" or "off"*}
+{article_sml_byline_font = "Arial,Helvetica,sans-serif"}
+{article_sml_byline_size = "12"} {*number only*}
+{article_sml_byline_color = "#000001"} {*#hex_code*}
+{article_sml_description_switch = "off"} {*"on" or "off"*}
+{article_sml_description_font = "Arial,Helvetica,sans-serif"}
+{article_sml_description_size = "15"} {*number only*}
+{article_sml_description_color = "#000001"} {*#hex_code*}
+{article_sml_char_limit = 150} {*limit the # of characters in description text; enter 20 or larger number*}
+
+{*----- STATION PROMO STYLES -----*}
+{promo_title_size = "22"} {*number only*}
+{promo_title_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{promo_title_color = "#000001"} {*#hex_code*}
+{promo_description_size = "15"} {*number only*}
+{promo_description_font = "Arial,Helvetica,sans-serif"}
+{promo_description_color = "#000001"} {*#hex_code*}
+
+{*----- CTA BUTTONS -----*}
+{cta_btn_width = "160"}
+{cta_btn_text_color = "#fffffe"} {*#hex_code*}
+{cta_btn_bgcolor = "#25252B"} {*#hex_code or "off"*}
+{cta_btn_font = "'Roboto Condensed','Ms Trebuchet',sans-serif"}
+{cta_btn_size = "15"} {*number only*}
+{cta_btn_rounded = "off"} {*"on" or "off"*}
+{cta_btn_border = "off"} {*"black", "gray" or "off"*}
+
+{*----- SPACERS -----*}
+{spacer_height = "40"}
+{spacer_height_mobile = "20"}
+{spacer_line_height = "1"}
+
+{*----- AD MODULES-----*}
+{ad_box = "off"} {*"on" or "off"*}
+{ad_banner = "off"} {*"on" or "off"*}
+{ad_revcontent = "off"} {*"on" or "off"*}
+{ad_box_borders = "#979797"} {*#hex_code or "off"*}
+{ad_box_borders_height = "1"} {*number only*}
+{ad_box_shading = "#eeeeee"} {*#hex_code or "off"*}
+{ad_box_title = "#999999"} {*#hex_code or "off"*}
+{ad_box_title_font = "Courier, monospace"}
+{ad_box_title_size = "13px"}
+{ad_banner_title = "#999999"} {*#hex_code or "off"*}
+{ad_banner_title_font = "Courier, monospace"}
+{ad_banner_title_size = "13px"}
+{revcontent_bg_color = "#fffffe" {*"#f1f1f1" or "#fffffe"*}
+{rev_content_code = "&nbsp;"}
+
+{*----- FOOTER SOCIAL -----*}
+{footersocial_switch = "on"} {*on or off to display*}
+{footersocial_text = "FOLLOW US"}
+{footersocial_text_color = "#fffffe"} {*#hex_code*}
+{footersocial_btn_iconcolor = "black"} {*"white", "gray" or "black"*}
+{footersocial_btn_bgcolor = "#fffffe"} {*#hex_code, "default" or "off"*}	
+{footersocial_btn_rounded = "on"} {*"on" or "off"*}
+{footersocial_btn_border = "black"} {*"black", "gray" or "off"*}
+
+{*----- FOOTER STYLES -----*}
+{footer_text_color = "#fffffe"} {*#hex_code*}
+{footer_text_size = "12px"}
+{footer_link_size = "15px"}
+{footer_text_font = "Arial,Helvetica,sans-serif"}
+{footer_shading = "#0d0d0d"} {*#hex_code or "off"*}
+
+{*----SENT TO TEXT and EMAIL ADDRESS-----*}
+{include_sent_to_email = "on"}

@@ -14,7 +14,7 @@ const options = yargs
 	.example('$0 -t template -a <account> -f <file.html> -n <name of template>', 'Creates or updates the template using file.html in account 1234')
 	.options({
 		'type': {
-			description: 'template or include',
+			description: 'template, include or generate',
 			type: "string",
 			required: false,
 			alias: 't',
@@ -38,7 +38,7 @@ const options = yargs
 	})
 	.argv;
 
-const type = (!options.type) ? "template" : "include";
+const type = (!options.type) ? "template" : options.type;
 
 let apiKey, apiSecret;
 try {
@@ -51,10 +51,19 @@ try {
 
 let apiClient = sailthru.createSailthruClient(apiKey, apiSecret);
 
-if (!options.filename) {
-	lib.printList(apiClient, type, options.account);
-} else {
-	const name = (!options.name) ? "" : options.name;
-	const path = (type == "template") ? templatesPath : includesPath;
-	lib.upload(apiClient, type, options.account, name, path + options.filename);
+switch(type) {
+	case "template":
+	case "include":
+		if (!options.filename) {
+			lib.printList(apiClient, type, options.account);
+		} else {
+			const name = (!options.name) ? "" : options.name;
+			const path = (type == "template") ? templatesPath : includesPath;
+			lib.upload(apiClient, type, options.account, name, path + options.filename);
+		}
+		break;
+	case "generate":
+		const account_data = credentials[options.account]['data'];
+		lib.generateTemplate(account_data, templatesPath);
+		break;
 }
