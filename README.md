@@ -1,6 +1,6 @@
 ## Basic Node.js CLI for the Sailthru REST API
 
-* Upload new templates and includes
+* Upload templates and includes
 
 ## Setup
 
