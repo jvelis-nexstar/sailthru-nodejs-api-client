@@ -104,3 +104,25 @@ exports.upload = (st, type, account, name, sourceFile) => {
 		}
 	}
 }
+
+/**
+ * Replace the beacon image
+ *
+ * @param st		object Sailthru API instance
+ * @param account	string account
+ * @returns			-
+ */
+exports.beacon = (st, account) => {
+	console.log(chalk.yellow('Set beacon image for '+ account + ':'));
+	const file = fs.createReadStream('img/beacon.png');
+	const settingsOptions = {
+		"file": file
+	}
+	st.apiPost('settings', settingsOptions, function(e, response) {
+		if (e) {
+			console.error(e);
+		} else {
+			console.dir(response);
+		}
+	});
+}
