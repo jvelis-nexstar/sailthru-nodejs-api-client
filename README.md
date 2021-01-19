@@ -1,5 +1,8 @@
-# sailthru-nodejs-api-client
-## Basic Sailthru node.js API client
+## Basic Node.js CLI for the Sailthru REST API
+
+* Upload new templates and includes
+
+## Setup
 
 * Add `config/credentials.json` and `config/config.json`
 * Run `npm install`
