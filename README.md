@@ -25,3 +25,6 @@
 * To update a template:
 	`node . -t template -a "ACC1" -f "template.html"`
 	`node . -t template -a "ACC1" -f "template.html" -n "Template Name"`
+
+* To update an include in all accounts:
+	`node . -t include -a "ALL" -f "core-module.html" -n "CoreModule"`

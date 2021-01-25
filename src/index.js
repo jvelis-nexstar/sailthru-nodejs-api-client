@@ -1,13 +1,10 @@
 #!/usr/bin/env node
+const chalk = require('chalk');
 const yargs = require('yargs');
-const sailthru = require('sailthru-client');
-const lib = require('./lib.js');
-
-const credentials = require('../config/credentials.json');
+const stClient = require('./stclient.js');
 const config = require('../config/config.json');
-
-const templatesPath = config['templatesPath'];
-const includesPath = config['includesPath'];
+const credentials = require('../config/credentials.json');
+const util = require('util');
 
 const options = yargs
 	.usage('Usage: $0 [command] [options]')
@@ -20,7 +17,7 @@ const options = yargs
 			alias: 't',
 		},
 		'account': {
-			description: 'Account name to use from the credentials file',
+			description: 'Account to use from the credentials file',
 			type: "string",
 			required: true,
 			alias: 'a',
@@ -38,32 +35,47 @@ const options = yargs
 	})
 	.argv;
 
-const type = (!options.type) ? "template" : options.type;
+const templatesPath = config['templatesPath'];
+const includesPath = config['includesPath'];
 
-let apiKey, apiSecret;
-try {
-	apiKey = credentials[options.account]['key'];
-	apiSecret = credentials[options.account]['secret'];
-} catch {
-	console.error("Invalid account identifier");
-	process.exit(1);
-}
+const filename	= (!options.filename) ? "" : options.filename;
+const item_name	= (!options.name) ? "" : options.name;
+const type		= (!options.type) ? "template" : options.type;
+const path		= (type == "template") ? templatesPath : includesPath;
+const account	= options.account;
 
-let apiClient = sailthru.createSailthruClient(apiKey, apiSecret);
+let api = new stClient;
 
 switch(type) {
 	case "template":
-	case "include":
-		if (!options.filename) {
-			lib.printList(apiClient, type, options.account);
+		if (!filename) {
+			api.getTemplateList(account).then(function(response) {
+				response.forEach(l => console.log('    \u2022 ' + l.name));
+			});
 		} else {
-			const name = (!options.name) ? "" : options.name;
-			const path = (type == "template") ? templatesPath : includesPath;
-			lib.upload(apiClient, type, options.account, name, path + options.filename);
+			api.upload(type, account, item_name, path + filename).then(function(response) {
+				chalk.green(console.log(response));
+			}).catch(function(e) {
+				console.error("Error: ", e);
+			});
+		}
+		break;
+	case "include":
+		if (!filename) {
+			api.getIncludeList(account).then(function(response) {
+				response.forEach(l => console.log('    \u2022 ' + l.name));
+			});
+		} else {
+			let accounts = [];
+			if (account.toLowerCase() == "all") {
+				accounts = Object.keys(credentials); // All accounts in credentials
+			} else {
+				accounts.push(account);
+			}
+			api.uploadMultiple(0, type, accounts, item_name, path + filename);
 		}
 		break;
 	case "generate":
-		const account_data = credentials[options.account]['data'];
-		lib.generateTemplate(account_data, templatesPath);
+		api.generateTemplate(account, templatesPath);
 		break;
 }
